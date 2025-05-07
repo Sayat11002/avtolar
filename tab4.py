@@ -94,7 +94,7 @@ fuels = {
 # === Odometer Checker ===
 @st.cache_data
 def load_data():
-    df = pd.read_csv(r"C:\Users\Саят\Downloads\22613data.csv")
+    df = pd.read_csv("22613data.csv")
     df.columns = df.columns.str.strip()
     return df
 
@@ -157,7 +157,7 @@ tabs = st.tabs(["AI подбор", "Проверка пробега", "Оцен�
 
 # === Tab 1: AI подбор ===
 with tabs[0]:
-    st.header("🧠 AI Подбор авто (Gemini)")
+    st.header("🧠 Умный подбор авто")
     user_input = st.text_input("Опиши, какой автомобиль тебе нужен:")
 
     if user_input:

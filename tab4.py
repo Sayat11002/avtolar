@@ -121,12 +121,12 @@ def preprocess_odometer_model(df):
     y = df["OdometerNormal"]
     return X, y, le_dict
 
-@st.cache_data
+@st.cache_resource
 def train_odometer_model(X, y):
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X, y)
     return model
-@st.cache_data
+@st.cache_resource
 def train_price_model(df,_encoders):
     df = df.copy()
     df = df.dropna(subset=["Price", "Year", "Mileage"])
@@ -134,7 +134,7 @@ def train_price_model(df,_encoders):
 
     for col in categorical_cols:
         df[col] = df[col].astype(str).str.upper()
-        df[col] = encoders[col].transform(df[col])
+        df[col] =_encoders[col].transform(df[col])
 
     X = df[["Company", "Mark", "Year", "Fuel Type", "Transmission", "Mileage", "Car_type"]]
     y = df["Price"]
@@ -161,7 +161,7 @@ with tabs[0]:
     user_input = st.text_input("Опиши, какой автомобиль тебе нужен:")
 
     if user_input:
-        with st.spinner("Создание рекомендации..."):
+        with st.spinner("loading"):
             prompt = f"""
 Ты — автомобильный эксперт. На основе описаний подбираешь лучший вариант машины под запрос.
 Но обязательно учитываешь, чтобы такие комплектации реально существовали — например, не предлагай электрокар с механикой.
